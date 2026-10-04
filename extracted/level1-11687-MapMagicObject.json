@@ -1,0 +1,185 @@
+{
+  "m_GameObject": {
+    "m_FileID": 0,
+    "m_PathID": 323
+  },
+  "m_Enabled": 0,
+  "m_Script": {
+    "m_FileID": 1,
+    "m_PathID": 2480
+  },
+  "m_Name": "",
+  "graph": {
+    "m_FileID": 2,
+    "m_PathID": 103111
+  },
+  "guiOpenObjectSelector": 0,
+  "guiTiles": 0,
+  "tiles": {
+    "allowMove": 1,
+    "generateInfinite": 1,
+    "generateRange": 2,
+    "retainMargin": 1,
+    "genAroundMainCam": 1,
+    "genAroundObjsTag": 0,
+    "genAroundTag": "",
+    "serializedTiles": [
+      {
+        "m_FileID": 0,
+        "m_PathID": 13415
+      }
+    ],
+    "serializedCoords": [
+      {
+        "x": 0,
+        "z": 0
+      }
+    ],
+    "customTiles": [],
+    "serializedPinnedCoords": [
+      {
+        "x": 0,
+        "z": 0
+      }
+    ]
+  },
+  "tileSize": {
+    "x": 5000.0,
+    "z": 5000.0
+  },
+  "previewCoord": {
+    "x": 0,
+    "z": 0
+  },
+  "previewAssigned": 0,
+  "tileResolution": 1025,
+  "tileMargins": 16,
+  "draftsInEditor": 1,
+  "draftsInPlaymode": 1,
+  "draftResolution": 65,
+  "draftMargins": 2,
+  "guiLocks": 0,
+  "locks": [
+    {
+      "locked": 1,
+      "worldPos": {
+        "x": 1696.0,
+        "y": 0.0,
+        "z": 2533.0
+      },
+      "worldRadius": 12.0,
+      "worldTransition": 6.0,
+      "rescaleDraft": 1,
+      "relativeHeight": 1,
+      "guiName": "StartPos",
+      "guiExpanded": 1,
+      "guiHeight": 64.23712921142578
+    }
+  ],
+  "guiInfiniteTerrains": 0,
+  "hideFarTerrains": 1,
+  "mainRange": 1,
+  "clearOnNodeRemove": 1,
+  "terrainSettings": {
+    "allowAutoConnect": 1,
+    "groupingID": 0,
+    "baseMapDist": 1000,
+    "showBaseMap": 1,
+    "baseMapResolution": 1024,
+    "drawInstanced": 1,
+    "pixelError": 1,
+    "shadowCastingMode": 0,
+    "reflectionProbeUsage": 1,
+    "editorRenderFlags": 7,
+    "heightmapMaximumLOD": 0,
+    "material": {
+      "m_FileID": 0,
+      "m_PathID": 1
+    },
+    "detailDraw": 1,
+    "detailDistance": 100.0,
+    "detailDensity": 1.0,
+    "treeDistance": 1000.0,
+    "treeBillboardStart": 200.0,
+    "treeFadeLength": 5.0,
+    "treeFullLod": 150,
+    "treeLODBiasMultiplier": 1.0,
+    "bakeLightProbesForTrees": 0,
+    "deringLightProbesForTrees": 1,
+    "windSpeed": 0.5,
+    "windSize": 0.5,
+    "windBending": 0.5,
+    "grassTint": {
+      "r": 0.5,
+      "g": 0.5,
+      "b": 0.5,
+      "a": 1.0
+    },
+    "guiCopy": 0,
+    "copyLayersTags": 1,
+    "copyComponents": 0
+  },
+  "globals": {
+    "height": 600.0,
+    "heightInterpolation": 0,
+    "heightSplit": 129,
+    "heightMainApply": 2,
+    "heightDraftApply": 0,
+    "grassResDownscale": 1,
+    "grassResPerPatch": 16,
+    "objectsNumPerFrame": 500,
+    "holesRes": 64,
+    "customControlTextureNames": [
+      "_ControlTexture1"
+    ],
+    "ctsProfile": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "microSplatPropData": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "microSplatTerrainDescriptor": 0,
+    "microSplatApplyType": 0,
+    "useCustomControlTextures": 0,
+    "microSplatNormals": 0,
+    "megaSplatTexList": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "vegetationPackage": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "assignComponent": 0,
+    "vegetationSystem": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "vegetationSystemCopy": 1,
+    "sourceMultiPackageVsProTagName": ""
+  },
+  "guiSettings": 0,
+  "guiTileSettings": 0,
+  "guiOutputsSettings": 0,
+  "guiExposedVariables": 0,
+  "guiTerrainSettings": 0,
+  "guiDraftSettings": 0,
+  "guiTreesGrassSettings": 0,
+  "instantGenerate": 1,
+  "saveIntermediate": 1,
+  "heightWeldMargins": 5,
+  "splatsWeldMargins": 2,
+  "guiHideWireframe": 0,
+  "guiThreads": 0,
+  "applyColliders": 1,
+  "setDirty": 0,
+  "shift": 0,
+  "shiftThreshold": 4000,
+  "shiftExcludeLayers": 0,
+  "serializedMultithreading": 1,
+  "serializedMaxThreads": 3,
+  "serializedAutoMaxThreads": 1,
+  "serializedMaxApplyTime": 3.0
+}

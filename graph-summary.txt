@@ -1,0 +1,140 @@
+3:Noise200 {"seed": 12345, "intensity": 1.13, "size": 5127.0, "detail": 0.44999999, "turbulence": 0.0}
+8:Erosion200 <- 15:Terrace200 {"iterations": 3, "terrainDurability": 0.62, "erosionAmount": 1.0, "sedimentAmount": 0.44999999, "fluidityIterations": 5}
+11:HeightOutput200 <- 313:MatrixPortalExit
+15:Terrace200 <- 18:Curve200 {"seed": 12345, "num": 8, "uniformity": 0.25, "steepness": 0.36000001}
+18:Curve200 <- 3:Noise200
+36:TexturesOutput200 layers(36:TexturesOutput200:dry)<-143:Cavity200 layers(36:TexturesOutput200:redDesert)<-141:Contrast200 layers(36:TexturesOutput200:stone_ground)<-70:Cavity200 layers(36:TexturesOutput200:Cliff)<-67:Slope200 layers(36:TexturesOutput200:road)<-331:MatrixPortalExit layers(36:TexturesOutput200:building)<-326:MatrixPortalExit layers(36:TexturesOutput200:building2)<-493:MatrixPortalExit layers(36:TexturesOutput200:road2)<-505:MatrixPortalExit
+67:Slope200 <- 110:MatrixPortalExit {"from": 25.0, "to": 90.0, "range": 30.0}
+70:Cavity200 <- 110:MatrixPortalExit {"intensity": 5.0}
+73:Scatter200 {"seed": 12344, "density": 0.05, "uniformity": 0.0}
+76:MatrixPortalEnter[Height] <- 138:Levels200
+80:MatrixPortalExit enter<-138:Levels200 enter<-76:MatrixPortalEnter[Height]
+82:Floor200 srcIn<-263:Combine200 heightIn<-80:MatrixPortalExit {"relativity": 1}
+87:Interlink200 <- 82:Floor200 {"iterations": 3}
+91:Pathfinding200 draftIn<-87:Interlink200 heightIn<-80:MatrixPortalExit {"resolution": 50, "distanceFactor": 0.5, "elevationFactor": 20.0, "straightenFactor": 1.0, "maxElevation": 800.0}
+96:Relax200 <- 91:Pathfinding200 {"blur": 0.5, "iterations": 20}
+100:Stroke200 <- 244:Optimize200 {"width": 1.0, "hardness": 0.80000001}
+102:Flatten200 positionsIn<-82:Floor200 heightsIn<-124:Stamp200 {"radius": 30.0, "hardness": 0.72000003}
+107:MatrixPortalEnter[heightOUT] <- 102:Flatten200
+110:MatrixPortalExit enter<-102:Flatten200 enter<-107:MatrixPortalEnter[heightOUT]
+112:Adjust200 input<-73:Scatter200 {"seed": 12345}
+119:SlideGenerator200 srcIn<-112:Adjust200 stratumIn<-80:MatrixPortalExit {"iterations": 100, "moveFactor": 0.5, "stopSlope": 10.0}
+124:Stamp200 splineIn<-244:Optimize200 heightIn<-80:MatrixPortalExit {"flatRange": 10.0, "blendRange": 100.0, "detail": 1}
+129:GrassOutput200 <- 153:Contrast200 {"density": 0.04}
+138:Levels200 <- 8:Erosion200
+141:Contrast200 <- 110:MatrixPortalExit {"brightness": 0.0, "contrast": 3.0}
+143:Cavity200 <- 110:MatrixPortalExit {"intensity": 20.0}
+146:GrassOutput200 <- 153:Contrast200 {"density": 0.004}
+153:Contrast200 <- 36:TexturesOutput200:dry {"brightness": 0.0, "contrast": 10.0}
+155:Scatter200 {"seed": 55566, "density": 2.0, "uniformity": 0.0}
+157:Adjust200 input<-155:Scatter200 {"seed": 55566}
+164:ObjectsOutput <- 178:Mask200 {"seed": 33665} prefabs=rock8,rock7,rock5,rock4,rock2,rock1
+176:Contrast200 <- 321:MatrixPortalExit {"brightness": 0.0, "contrast": 2.0}
+178:Mask200 srcIn<-157:Adjust200 maskIn<-176:Contrast200 {"seed": 55566, "invert": false}
+183:Stroke200 <- 529:SafeBorders218 {"radius": 20.0, "hardness": 0.5}
+186:Scatter200 {"seed": 12345, "density": 50.0, "uniformity": 0.1}
+188:Adjust200 input<-186:Scatter200 {"seed": 12345}
+193:Mask200 srcIn<-188:Adjust200 maskIn<-198:Selector200 {"seed": 12345, "invert": false}
+198:Selector200 <- 176:Contrast200 {"from": {"x": -0.10000038, "y": 0.10000038}, "to": {"x": 0.49999964, "y": 0.70000041}}
+204:Mask200 srcIn<-193:Mask200 maskIn<-211:MatrixPortalExit {"seed": 12345, "invert": false}
+209:MatrixPortalEnter[dry] <- 36:TexturesOutput200:dry
+211:MatrixPortalExit enter<-36:TexturesOutput200:dry enter<-209:MatrixPortalEnter[dry]
+213:Adjust200 input<-204:Mask200 {"seed": 12345}
+218:GrassOutput200 <- 153:Contrast200 {"density": 0.007}
+224:GrassOutput200 <- 153:Contrast200 {"density": 0.004}
+228:GrassOutput200 <- 153:Contrast200 {"density": 0.006}
+232:ObjectsOutput <- 213:Adjust200 {"seed": 99985} prefabs=Dry4,Dry3,Dry2,Dry1
+241:MatrixPortalEnter[Slope] <- 67:Slope200
+244:Optimize200 <- 96:Relax200 {"split": 3, "deviation": 1.0}
+246:Scatter200 {"seed": 938271, "density": 0.0007, "uniformity": 0.1}
+248:SlideGenerator200 srcIn<-246:Scatter200 {"iterations": 100, "moveFactor": 0.5, "stopSlope": 10.0}
+252:ObjectsOutput <- 248:SlideGenerator200 {"seed": 12345} prefabs=Sandstorm_1
+258:Positions200 {"positions": [{"x": 1696.0, "y": 0.0, "z": 2533.0}]}
+263:Combine200 inlets(263:Combine200:port)<-258:Positions200 inlets(263:Combine200:port)<-119:SlideGenerator200
+269:Scatter200 {"seed": 25149, "density": 0.1, "uniformity": 0.0}
+272:Adjust200 input<-269:Scatter200 {"seed": 25149}
+276:SlideGenerator200 srcIn<-272:Adjust200 stratumIn<-297:MatrixPortalExit {"iterations": 100, "moveFactor": 10.0, "stopSlope": 5.0}
+280:ObjectsOutput <- 523:SafeBorders218 {"seed": 25649} prefabs=Wreck_2,Wreck_3,Wreck_5
+288:Mask200 srcIn<-276:SlideGenerator200 maskIn<-308:MatrixPortalExit {"seed": 25149, "invert": true}
+293:Flatten200 positionsIn<-523:SafeBorders218 heightsIn<-297:MatrixPortalExit {"radius": 25.0, "hardness": 0.72000003}
+297:MatrixPortalExit enter<-507:Flatten200 enter<-298:MatrixPortalEnter[heightOut5]
+298:MatrixPortalEnter[heightOut5] <- 507:Flatten200
+302:MatrixPortalEnter[heightOut2] <- 293:Flatten200
+305:MatrixPortalEnter[desert] <- 36:TexturesOutput200:Desert
+308:MatrixPortalExit enter<-415:Mask200 enter<-309:MatrixPortalEnter[DesertMask]
+309:MatrixPortalEnter[DesertMask] <- 415:Mask200
+313:MatrixPortalExit enter<-452:Flatten200 enter<-314:MatrixPortalEnter[heightOut4]
+314:MatrixPortalEnter[heightOut4] <- 452:Flatten200
+318:MatrixPortalEnter[Erosion] <- 8:Erosion200
+321:MatrixPortalExit enter<-8:Erosion200 enter<-318:MatrixPortalEnter[Erosion]
+323:MatrixPortalEnter[campGround] <- 183:Stroke200
+326:MatrixPortalExit enter<-183:Stroke200 enter<-323:MatrixPortalEnter[campGround]
+328:MatrixPortalEnter[roadStroke] <- 100:Stroke200
+331:MatrixPortalExit enter<-100:Stroke200 enter<-328:MatrixPortalEnter[roadStroke]
+333:Scatter200 {"seed": 98854, "density": 14.0, "uniformity": 0.0}
+335:Adjust200 input<-410:Rarefy200 {"seed": 98854}
+339:SlideGenerator200 srcIn<-335:Adjust200 stratumIn<-370:MatrixPortalExit {"iterations": 100, "moveFactor": 0.69999999, "stopSlope": 15.0}
+343:ObjectsOutput <- 525:SafeBorders218 {"seed": 25649} prefabs=Camp_16,Wreck_1,Wreck_4,Wreck_6,Wreck_7,Wreck_8,Cave_2,Cave_3
+356:Mask200 srcIn<-339:SlideGenerator200 maskIn<-365:MatrixPortalExit {"seed": 98854, "invert": false}
+361:Flatten200 positionsIn<-525:SafeBorders218 heightsIn<-370:MatrixPortalExit {"radius": 50.0, "hardness": 0.72000003}
+365:MatrixPortalExit enter<-403:Mask200 enter<-366:MatrixPortalEnter[DryGrassyMask]
+366:MatrixPortalEnter[DryGrassyMask] <- 403:Mask200
+370:MatrixPortalExit enter<-293:Flatten200 enter<-302:MatrixPortalEnter[heightOut2]
+372:MatrixPortalEnter[heightOut3] <- 361:Flatten200
+375:MatrixPortalEnter[cavityDry] <- 143:Cavity200
+378:MatrixPortalEnter[contrastRedDesert] <- 141:Contrast200
+381:MatrixPortalEnter[cavityStoneGround] <- 70:Cavity200
+384:MatrixPortalEnter[DryContrast] <- 153:Contrast200
+387:Mask200 srcIn<-422:Mask200 maskIn<-392:MatrixPortalExit {"seed": 25149, "invert": true}
+392:MatrixPortalExit enter<-183:Stroke200 enter<-323:MatrixPortalEnter[campGround]
+394:Mask200 srcIn<-356:Mask200 maskIn<-399:MatrixPortalExit {"seed": 98854, "invert": true}
+399:MatrixPortalExit enter<-183:Stroke200 enter<-323:MatrixPortalEnter[campGround]
+401:MatrixPortalExit enter<-36:TexturesOutput200:dry enter<-209:MatrixPortalEnter[dry]
+403:Mask200 aIn<-401:MatrixPortalExit bIn<-408:MatrixPortalExit {"invert": false}
+408:MatrixPortalExit enter<-102:Flatten200 enter<-107:MatrixPortalEnter[heightOUT]
+410:Rarefy200 <- 333:Scatter200 {"distance": 230.0}
+413:MatrixPortalExit enter<-36:TexturesOutput200:dry enter<-209:MatrixPortalEnter[dry]
+415:Mask200 aIn<-413:MatrixPortalExit bIn<-420:MatrixPortalExit {"invert": true}
+420:MatrixPortalExit enter<-102:Flatten200 enter<-107:MatrixPortalEnter[heightOUT]
+422:Mask200 srcIn<-288:Mask200 maskIn<-427:MatrixPortalExit {"seed": 12345, "invert": true}
+427:MatrixPortalExit enter<-141:Contrast200 enter<-378:MatrixPortalEnter[contrastRedDesert]
+429:Scatter200 {"seed": 11985, "density": 10.0, "uniformity": 0.0}
+431:Adjust200 input<-461:Rarefy200 {"seed": 98854}
+435:SlideGenerator200 srcIn<-431:Adjust200 stratumIn<-516:MatrixPortalExit {"iterations": 100, "moveFactor": 0.69999999, "stopSlope": 15.0}
+439:ObjectsOutput <- 589:Split200:Uncommon {"seed": 44119} prefabs=Cave_5,Cave_6,Cave_7
+447:Mask200 srcIn<-435:SlideGenerator200 maskIn<-365:MatrixPortalExit {"seed": 98854, "invert": false}
+452:Flatten200 positionsIn<-527:SafeBorders218 heightsIn<-516:MatrixPortalExit {"radius": 70.0, "hardness": 0.72000003}
+456:Mask200 srcIn<-447:Mask200 maskIn<-399:MatrixPortalExit {"seed": 98854, "invert": true}
+461:Rarefy200 <- 429:Scatter200 {"distance": 930.0}
+464:Scatter200 {"seed": 91271, "density": 0.009, "uniformity": 0.0}
+466:Adjust200 input<-464:Scatter200 {"seed": 12345}
+470:SlideGenerator200 srcIn<-466:Adjust200 stratumIn<-488:MatrixPortalExit {"iterations": 100, "moveFactor": 0.5, "stopSlope": 10.0}
+474:Floor200 srcIn<-470:SlideGenerator200 heightIn<-488:MatrixPortalExit {"relativity": 0}
+479:Stroke200 <- 518:SafeBorders218 {"radius": 70.0, "hardness": 0.5}
+481:Interlink200 <- 474:Floor200 {"iterations": 3}
+484:Pathfinding200 draftIn<-481:Interlink200 heightIn<-488:MatrixPortalExit {"resolution": 50, "distanceFactor": 0.5, "elevationFactor": 20.0, "straightenFactor": 1.0, "maxElevation": 800.0}
+488:MatrixPortalExit enter<-102:Flatten200 enter<-107:MatrixPortalEnter[heightOUT]
+490:MatrixPortalEnter[campGround_2] <- 479:Stroke200
+493:MatrixPortalExit enter<-479:Stroke200 enter<-490:MatrixPortalEnter[campGround_2]
+495:Relax200 <- 484:Pathfinding200 {"blur": 0.5, "iterations": 20}
+498:Optimize200 <- 495:Relax200 {"split": 3, "deviation": 1.0}
+500:Stroke200 <- 498:Optimize200 {"width": 1.0, "hardness": 0.80000001}
+502:MatrixPortalEnter[roadStroke_2] <- 500:Stroke200
+505:MatrixPortalExit enter<-500:Stroke200 enter<-502:MatrixPortalEnter[roadStroke_2]
+507:Flatten200 positionsIn<-474:Floor200 heightsIn<-512:Stamp200 {"radius": 80.0, "hardness": 0.72000003}
+512:Stamp200 splineIn<-498:Optimize200 heightIn<-488:MatrixPortalExit {"flatRange": 10.0, "blendRange": 100.0, "detail": 1}
+516:MatrixPortalExit enter<-361:Flatten200 enter<-372:MatrixPortalEnter[heightOut3]
+518:SafeBorders218 <- 470:SlideGenerator200 {"edgeDist": 100.0}
+521:SafeBorders218 <- 119:SlideGenerator200 {"edgeDist": 40.0}
+523:SafeBorders218 <- 387:Mask200 {"edgeDist": 40.0}
+525:SafeBorders218 <- 394:Mask200 {"edgeDist": 40.0}
+527:SafeBorders218 <- 456:Mask200 {"edgeDist": 100.0}
+529:SafeBorders218 <- 263:Combine200 {"edgeDist": 40.0}
+531:Split200 <- 521:SafeBorders218 {"seed": 66699} weights=Unusual:1.5,Common:2.0
+543:ObjectsOutput <- 531:Split200:Common {"seed": 77897} prefabs=Camp_1,Camp_2,Camp_3,Camp_5,Camp_8,Camp_9,Camp_11,Camp_16
+554:ObjectsOutput <- 531:Split200:Unusual {"seed": 22113} prefabs=Camp_4,Camp_6,Camp_10,Camp_12,Building_1,Building_7
+564:Split200 <- 518:SafeBorders218 {"seed": 44771} weights=Uncommon:1.5,Common:2.0
+570:ObjectsOutput <- 564:Split200:Common {"seed": 98745} prefabs=Camp_13,Camp_15,Building_2,Building_3,Building_5
+580:ObjectsOutput <- 564:Split200:Uncommon {"seed": 55134} prefabs=Camp_7,Camp_14,Building_4,Building_6
+589:Split200 <- 527:SafeBorders218 {"seed": 11112} weights=Uncommon:1.5,Common:2.0
+594:ObjectsOutput <- 589:Split200:Common {"seed": 44456} prefabs=Cave_1,Cave_4
