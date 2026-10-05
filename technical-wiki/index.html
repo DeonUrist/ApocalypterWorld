@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apocalypter Technical Wiki</title>
+<style>
+:root{--bg:#0c1117;--panel:#151b23;--panel2:#10161d;--text:#dce4ee;--muted:#8d99a8;--line:#293241;--accent:#67b7ff;--green:#58c27d;--yellow:#e6b450;--red:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:10;background:#080c11;border-bottom:1px solid var(--line)}
+nav{max-width:1240px;margin:auto;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+nav strong{margin-right:auto}.wrap{max-width:1240px;margin:auto;padding:28px 18px 80px}
+h1{font-size:32px;margin:.15em 0 .4em}h2{font-size:23px;margin-top:38px;border-bottom:1px solid var(--line);padding-bottom:8px}
+h3{font-size:17px;margin-top:0}.lead{font-size:17px;color:#b9c5d3;max-width:950px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:15px}
+.muted,.src{color:var(--muted)}.src{font-size:12px}.tag{display:inline-block;border:1px solid var(--line);padding:2px 7px;border-radius:999px;color:var(--muted);font-size:12px;margin:2px}
+.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#090e14}code{padding:2px 5px;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+th{color:#b9c5d3}.callout{border-left:4px solid var(--accent);background:var(--panel2);padding:11px 14px;margin:14px 0}
+.kpi{font-size:28px;font-weight:700}.toc a{display:block;padding:3px 0}
+</style>
+</head>
+<body>
+<header><nav><strong>Apocalypter Technical Wiki</strong><a href="#systems">Systems</a><a href="#survival">Survival</a><a href="#modding">Modding hooks</a><a href="agent.md">Agent guide</a><a href="facts.jsonl">Facts JSONL</a><a href="../">World viewer</a></nav></header>
+<main class="wrap">
+<h1>Apocalypter Technical Wiki</h1>
+<p class="lead">A reverse-engineered technical reference for mod developers and coding agents. The curated layer explains systems; exact engine names are preserved for implementation work. Facts are labeled <span class="good">verified</span> when directly observed in supplied vanilla data and <span class="warn">derived</span> when they are arithmetic or direct interpretation.</p>
+
+<div class="grid">
+<div class="card"><div class="kpi">2,917</div><div class="muted">runtime FSM components indexed</div></div>
+<div class="card"><div class="kpi">340</div><div class="muted">unique runtime FSM names</div></div>
+<div class="card"><div class="kpi">8,129</div><div class="muted">serialized PlayMakerFSM components identified offline</div></div>
+<div class="card"><div class="kpi">519</div><div class="muted">serialized FSMs fully decoded offline</div></div>
+</div>
+
+<div class="callout"><b>Implementation convention:</b> treat <code>&lt;GameObject path&gt; :: &lt;FSM name&gt;</code> as the stable lookup key. Example: <code>__GameManager__ :: Hunger</code>.</div>
+
+<h2 id="systems">System map</h2>
+<div class="grid">
+<div class="card"><h3>Survival & needs</h3><p>Hunger, Thirst, Fatigue, Insanity (<code>Sanity</code>), Radiation and Sleep.</p></div>
+<div class="card"><h3>Health & damage</h3><p>Player Health, death gating, starvation/dehydration, insanity damage, fall damage and body-part routing.</p></div>
+<div class="card"><h3>Movement & interaction</h3><p>Standing/running/crouching/crawling, jump, ground checks and camera-driven interactions.</p></div>
+<div class="card"><h3>Items & consumables</h3><p>Reusable FSMs such as <code>ID</code>, <code>ItemName</code>, <code>Value</code>, <code>Food</code>, liquids, cooking, perishability and condition.</p></div>
+<div class="card"><h3>Spawning & loot</h3><p><code>ItemSpawner</code>, item-count helpers, enemy/critter spawners and sanity hallucination spawns.</p></div>
+<div class="card"><h3>Weapons & ammo</h3><p>Weapon type, ammo, reload, chambering, recoil, aiming and player hand-state FSM families.</p></div>
+<div class="card"><h3>Vehicles</h3><p><code>Player :: InCar</code> bridges player state to vehicle controls; vehicle behavior also uses NWH Vehicle Physics components.</p></div>
+<div class="card"><h3>Economy</h3><p>Item <code>Value</code>, buy/sell eligibility, money checks and merchant-facing FSMs.</p></div>
+<div class="card"><h3>Persistence</h3><p>Easy Save (ES3), per-object save FSMs and the main <code>SaveLoadGame</code> coordinator.</p></div>
+</div>
+
+<h2 id="survival">Survival & needs</h2>
+<table>
+<thead><tr><th>Meter</th><th>Passive behavior</th><th>Warning</th><th>Critical</th><th>Critical consequence</th></tr></thead>
+<tbody>
+<tr><td><code>Hunger</code></td><td>+0.01/s, clamp 0..100</td><td>&gt;80</td><td>&gt;99.9</td><td><code>Health -0.1/s</code></td></tr>
+<tr><td><code>Thirst</code></td><td>+0.02/s, clamp 0..100</td><td>&gt;80</td><td>&gt;99.9</td><td><code>Health -0.1/s</code></td></tr>
+<tr><td><code>Fatigue</code></td><td>+0.02/s, clamp 0..100</td><td>&gt;80</td><td>&gt;99.9</td><td>forces sleep; requests <code>SleepTime=6</code></td></tr>
+<tr><td>Insanity (<code>Sanity</code>)</td><td>-0.05/s toward zero</td><td>&gt;80</td><td>&gt;95</td><td><code>Health -0.35/s</code>; spawn system active above 90</td></tr>
+</tbody>
+</table>
+<p class="src">Source: supplied vanilla runtime FSM detail dump. Runtime values are snapshots; rates/thresholds above come from FSM actions/conditions.</p>
+
+<div class="grid">
+<div class="card"><h3>Hunger clock</h3><p><span class="warn">Derived:</span> at +0.01/s, 0→80 is ~133.3 min and 0→100 is ~166.7 min.</p><p><code>__GameManager__ :: Hunger</code></p></div>
+<div class="card"><h3>Thirst clock</h3><p><span class="warn">Derived:</span> at +0.02/s, 0→80 is ~66.7 min and 0→100 is ~83.3 min.</p><p><code>__GameManager__ :: Thirst</code></p></div>
+<div class="card"><h3>Fatigue clock</h3><p><span class="warn">Derived:</span> baseline timing matches Thirst; critical state initiates sleep rather than direct HP damage.</p><p><code>__GameManager__ :: Fatigue</code></p></div>
+<div class="card"><h3>Insanity semantics</h3><p>The variable is named <code>Sanity</code>, but high values are harmful and passive logic subtracts toward zero. This wiki therefore calls it Insanity in gameplay descriptions.</p><p><code>__GameManager__ :: Sanity</code></p></div>
+</div>
+
+<h3>Sleep transaction</h3>
+<p><code>Player :: Sleep</code> applies the following immediately when sleep activates:</p>
+<table><tbody>
+<tr><td>Fatigue</td><td><code>-100</code></td></tr>
+<tr><td>Insanity / <code>Sanity</code></td><td><code>-30</code></td></tr>
+<tr><td>Hunger</td><td><code>+10</code></td></tr>
+<tr><td>Thirst</td><td><code>+15</code></td></tr>
+<tr><td>Health</td><td><code>+40</code></td></tr>
+<tr><td>Drunkenness</td><td><code>-100</code></td></tr>
+<tr><td>Weed / alcohol effects</td><td>deactivated</td></tr>
+</tbody></table>
+<p>Forced exhaustion sleep is initiated by <code>__GameManager__ :: Fatigue</code>, which writes <code>SleepTime=6</code> into <code>PlayerCamera :: UseBed</code> and sends <code>Activate</code> to <code>Player :: Sleep</code>.</p>
+
+<h3>Insanity mutant spawn loop</h3>
+<p><code>__GameManager__ :: SanityMutantSpawn</code> is enabled by the sanity system. Above 90 it waits a random 8–15 seconds, selects an entry from <code>EnemySpawn</code>, and creates it around the player using random X/Z offsets from -25 to +25 and Y +5. The dump also shows weights <code>[0.3, 0.3, 0.3]</code>; exact weighted-selection semantics should be verified before treating them as final effective probabilities.</p>
+
+<h2>Health & damage</h2>
+<div class="grid">
+<div class="card"><h3>Health</h3><p><code>Player :: Health</code> clamps Health to 0..100. The player-death transition is triggered when Health falls below approximately 0.4.</p></div>
+<div class="card"><h3>Fall damage</h3><p><code>Player :: FallDamage</code> checks <code>GroundTest.fallingTime</code>. After more than 2 seconds it multiplies falling time by -9 and routes the result into body-part damage.</p></div>
+<div class="card"><h3>Radiation</h3><p><code>__GameManager__ :: Radiation</code> clamps radiation to 0..100 and warns above 80. The inspected FSM did not itself expose a universal passive radiation gain rate.</p></div>
+</div>
+
+<h2>Movement & interaction</h2>
+<p><code>Player :: Movement</code> has standing, crouching, crawling and running modes. The observed base horizontal/vertical movement multipliers are 2; running uses vertical multiplier 5 and clamps forward input to 5. <code>Player :: Jump</code> handles grounded Jump input through a PlayMaker force action.</p>
+<p>Interaction is camera-centric. <code>PlayerCamera :: UseFood</code> ray-picks nearby objects (observed range: 2 units) and handles item-use interaction. <code>PlayerCamera :: UseBed</code> manages sleep duration and the sleep UI.</p>
+
+<h2>Items & consumables</h2>
+<p>Apocalypter items are modular: an item GameObject can carry multiple small FSMs rather than one monolithic item implementation. Frequently observed families include:</p>
+<div class="grid">
+<div class="card"><h3>Identity</h3><p><code>ID</code>, <code>ItemName</code>, image/texture-related FSMs.</p></div>
+<div class="card"><h3>Economy</h3><p><code>Value</code>, buy/sell eligibility and merchant interaction state.</p></div>
+<div class="card"><h3>Consumables</h3><p><code>Food</code>, liquid-level FSMs, can/container use and item-use entry points.</p></div>
+<div class="card"><h3>Lifecycle</h3><p><code>Cook</code>, <code>Perishable</code>, <code>Condition</code>, repair/butcher-related FSMs where applicable.</p></div>
+</div>
+<div class="callout">Many item FSMs exist in the broad runtime dump but their exact action parameters were not present in the filtered detail dump. Do not invent restoration values for an item unless the detailed action or serialized object confirms them.</div>
+
+<h2>Spawning & loot</h2>
+<p>World loot uses many <code>ItemSpawner</code> instances tied to concrete world object paths, often with helper FSMs such as <code>ItemNum</code>. Exact effective probabilities can be nested across count rolls, item-pool selection, weights, and “nothing” outcomes; calculate them only from detailed action parameters.</p>
+<p>Example runtime pattern previously observed: an <code>ItemSpawner</code> can carry min/max item counts, use random integer selection, get an entry from an ArrayList, choose a child spawn position and create the item.</p>
+
+<h2>Weapons & vehicles</h2>
+<p>Weapon behavior is composed from PlayMaker families for weapon type, ammunition, reload/chamber state, recoil, aiming and player hand behavior. Vehicle behavior mixes PlayMaker with NWH Vehicle Physics. The player-side bridge is <code>Player :: InCar</code>, which tracks <code>InCarInt</code>/<code>InCarBool</code> and switches movement/headbob/footstep/damage-effect behavior between on-foot and in-car states.</p>
+
+<h2>Save & persistence</h2>
+<p><code>SaveLoadGame :: SaveLoadGame</code> is the main coordinator. The inspected FSM references Easy Save / ES3, <code>SaveGame1.es3</code>, the world seed, timeline and MapMagic position, and broadcasts save/load-related events. Many world objects also use their own save FSMs, so persistence changes should be audited both globally and per-object.</p>
+
+<h2 id="modding">Recommended modding hooks</h2>
+<table>
+<thead><tr><th>Goal</th><th>Narrowest known target</th></tr></thead>
+<tbody>
+<tr><td>Change hunger accumulation or thresholds</td><td><code>__GameManager__ :: Hunger</code></td></tr>
+<tr><td>Change thirst accumulation or thresholds</td><td><code>__GameManager__ :: Thirst</code></td></tr>
+<tr><td>Change exhaustion / forced sleep</td><td><code>__GameManager__ :: Fatigue</code></td></tr>
+<tr><td>Change insanity recovery, warning or lethal threshold</td><td><code>__GameManager__ :: Sanity</code></td></tr>
+<tr><td>Change hallucination enemy spawning</td><td><code>__GameManager__ :: SanityMutantSpawn</code></td></tr>
+<tr><td>Change sleep costs/restoration</td><td><code>Player :: Sleep</code></td></tr>
+<tr><td>Change how beds initiate sleep</td><td><code>PlayerCamera :: UseBed</code></td></tr>
+<tr><td>Change death handling</td><td><code>Player :: Health</code></td></tr>
+<tr><td>Change player vehicle transitions</td><td><code>Player :: InCar</code></td></tr>
+<tr><td>Change global save/load orchestration</td><td><code>SaveLoadGame :: SaveLoadGame</code></td></tr>
+</tbody>
+</table>
+
+<h2>Evidence & coverage</h2>
+<p>The source corpus combines runtime FSM dumps, an offline Unity serialized-asset scan, and managed assemblies. The offline scan identified 8,129 PlayMakerFSM components but only 519 were fully decoded by the current generic type-tree pass. Runtime detail remains the strongest source for exact player-system action parameters.</p>
+<p><a href="agent.md">Read the coding-agent guide</a> · <a href="facts.jsonl">Machine-readable fact set</a> · <a href="../">Open the existing Apocalypter world viewer</a></p>
+</main>
+</body>
+</html>
