@@ -28,6 +28,7 @@ Examples:
 
 - **verified** — directly represented in supplied vanilla runtime or serialized data.
 - **derived** — arithmetic or direct interpretation of verified values.
+- **reported** — observed behaviour recorded in mod-development notes (the `modding.*` facts, see `modding-facts.html`); treat as strong guidance, not independently verified.
 - **needs-verification** — runtime semantics, missing detailed action parameters, or incomplete serialized decoding prevent a definitive claim.
 
 Runtime variable values are snapshots and are not automatically default values.

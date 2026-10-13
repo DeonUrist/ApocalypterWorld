@@ -3,28 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Apocalypter Technical Wiki</title>
+<title>Technical Wiki · Apocalypter</title>
+<script>(function(){try{var t=localStorage.getItem('apocalypter-doc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}})();</script>
 <style>
-:root{--bg:#0c1117;--panel:#151b23;--panel2:#10161d;--text:#dce4ee;--muted:#8d99a8;--line:#293241;--accent:#67b7ff;--green:#58c27d;--yellow:#e6b450;--red:#ff6b6b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-header{position:sticky;top:0;z-index:10;background:#080c11;border-bottom:1px solid var(--line)}
-nav{max-width:1240px;margin:auto;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-nav strong{margin-right:auto}.wrap{max-width:1240px;margin:auto;padding:28px 18px 80px}
-h1{font-size:32px;margin:.15em 0 .4em}h2{font-size:23px;margin-top:38px;border-bottom:1px solid var(--line);padding-bottom:8px}
-h3{font-size:17px;margin-top:0}.lead{font-size:17px;color:#b9c5d3;max-width:950px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:15px}
-.muted,.src{color:var(--muted)}.src{font-size:12px}.tag{display:inline-block;border:1px solid var(--line);padding:2px 7px;border-radius:999px;color:var(--muted);font-size:12px;margin:2px}
-.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}
-code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#090e14}code{padding:2px 5px;border-radius:4px}
-table{width:100%;border-collapse:collapse;margin:12px 0}th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
-th{color:#b9c5d3}.callout{border-left:4px solid var(--accent);background:var(--panel2);padding:11px 14px;margin:14px 0}
-.kpi{font-size:28px;font-weight:700}.toc a{display:block;padding:3px 0}
+:root{color-scheme:light;--bg:#f4f0e8;--paper:#fcfaf5;--text:#262821;--muted:#636559;--accent:#a54420;--line:#d5d0c4;--code:#eee9df;--hint:#e8eadf;--good:#3d7a35;--warn:#94640a;--bad:#b3311f}
+:root[data-theme=dark]{color-scheme:dark;--bg:#20221c;--paper:#292c24;--text:#edece4;--muted:#b6b8aa;--accent:#f39d70;--line:#4e5245;--code:#33372c;--hint:#363c2e;--good:#9bd28a;--warn:#e7bd62;--bad:#ff9277}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.68 system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:var(--accent);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}
+button,input{font:inherit}
+button{border:1px solid var(--line);background:var(--paper);color:var(--text);padding:7px 12px;border-radius:4px;cursor:pointer}
+button:hover{background:var(--hint)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.subnav{border-bottom:1px solid var(--line)}
+.subnav-in{max-width:1100px;margin:auto;padding:8px 40px;display:flex;flex-wrap:wrap;gap:4px 20px;font-size:14px}
+.subnav-in strong{font-weight:650;margin-right:auto;color:var(--text)}
+.subnav a{color:var(--muted);text-decoration:none}.subnav a:hover{color:var(--accent)}
+.wrap{max-width:1100px;margin:auto;padding:36px 40px 90px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent)}
+h1{font:normal clamp(36px,5vw,58px)/1.1 Georgia,serif;margin:10px 0 22px;letter-spacing:-1px}
+h2{font:normal 29px/1.2 Georgia,serif;margin:56px 0 20px;padding-top:22px;border-top:1px solid var(--line)}
+h3{font-size:18px;line-height:1.4;margin:0 0 8px}
+p{margin:12px 0 18px}strong,b{font-weight:650}
+.lead{font-size:19px;line-height:1.65;color:var(--muted);max-width:820px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 18px}
+.card p{margin:6px 0}
+.muted,.src{color:var(--muted)}.src{font-size:13px}
+.tag{display:inline-block;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:var(--hint);padding:3px 8px;border-radius:3px;color:var(--muted)}
+.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{font:0.87em/1.6 ui-monospace,Consolas,monospace;background:var(--code);padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}
+pre{background:var(--code);padding:16px;overflow:auto}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;line-height:1.55}
+th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 12px;vertical-align:top;overflow-wrap:anywhere}
+th{background:var(--hint);font-weight:650}
+.callout{border-left:3px solid var(--accent);background:var(--hint);padding:14px 18px;margin:18px 0}
+.callout p:last-child{margin-bottom:0}
+.table-wrap{overflow-x:auto}
+.kpi{font:normal 34px/1.2 Georgia,serif;color:var(--accent)}
+@media(max-width:1000px){.subnav-in,.wrap{padding-left:24px;padding-right:24px}}
+@media(max-width:730px){body{font-size:15px}.subnav-in,.wrap{padding-left:16px;padding-right:16px}.subnav-in strong{width:100%}h2{font-size:25px;margin-top:44px}.lead{font-size:17px}th,td{padding:9px 7px;font-size:13px}}
+@media print{body{background:#fff;color:#000}.subnav{display:none}}
+
+.site-top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.site-top-in{max-width:1360px;margin:auto;padding:0 40px;display:flex;align-items:center;gap:28px;min-height:56px}
+.site-brand{font-size:13px;font-weight:650;letter-spacing:2px;text-transform:uppercase;color:var(--accent);text-decoration:none;white-space:nowrap}
+.site-tabs{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.site-tabs::-webkit-scrollbar{display:none}
+.site-tabs a{display:block;padding:17px 12px 15px;border:0;border-bottom:2px solid transparent;border-left:0;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none;white-space:nowrap}
+.site-tabs a:hover{color:var(--text);border-bottom-color:var(--line)}
+.site-tabs a[aria-current=page]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.site-theme{flex:none;font-size:13px;padding:6px 12px}
+@media(max-width:1000px){.site-top-in{padding:0 24px;gap:16px}}
+@media(max-width:730px){.site-top-in{padding:0 16px;gap:10px}.site-brand{display:none}.site-tabs{gap:0}.site-tabs a{padding:15px 8px 13px;font-size:13px}.site-theme{font-size:0;width:34px;height:34px;padding:0;line-height:1}.site-theme::before{content:"\25D0";font-size:17px}}
+@media print{.site-top{display:none}}
 </style>
 </head>
 <body>
-<header><nav><strong>Apocalypter Technical Wiki</strong><a href="#systems">Systems</a><a href="#survival">Survival</a><a href="#modding">Modding hooks</a><a href="agent.md">Agent guide</a><a href="facts.jsonl">Facts JSONL</a><a href="../">World viewer</a></nav></header>
+<header class="site-top"><div class="site-top-in"><a class="site-brand" href="../">Apocalypter</a><nav class="site-tabs" aria-label="Site sections"><a href="../">World Facts</a><a href="./" aria-current="page">Technical Wiki</a><a href="modding-facts.html">Modding Facts</a></nav><button type="button" id="theme" class="site-theme">Dark mode</button></div></header>
+<div class="subnav"><div class="subnav-in"><strong>Technical Wiki</strong><a href="#systems">Systems</a><a href="#survival">Survival</a><a href="#modding">Modding hooks</a><a href="agent.md">Agent guide</a><a href="facts.jsonl">Facts JSONL</a></div></div>
 <main class="wrap">
+<div class="eyebrow">Technical wiki · systems reference</div>
 <h1>Apocalypter Technical Wiki</h1>
 <p class="lead">A reverse-engineered technical reference for mod developers and coding agents. The curated layer explains systems; exact engine names are preserved for implementation work. Facts are labeled <span class="good">verified</span> when directly observed in supplied vanilla data and <span class="warn">derived</span> when they are arithmetic or direct interpretation.</p>
 
@@ -117,6 +157,7 @@ th{color:#b9c5d3}.callout{border-left:4px solid var(--accent);background:var(--p
 <p><code>SaveLoadGame :: SaveLoadGame</code> is the main coordinator. The inspected FSM references Easy Save / ES3, <code>SaveGame1.es3</code>, the world seed, timeline and MapMagic position, and broadcasts save/load-related events. Many world objects also use their own save FSMs, so persistence changes should be audited both globally and per-object.</p>
 
 <h2 id="modding">Recommended modding hooks</h2>
+<p>For engine-level behaviour every plugin runs into (floating origin, distance culling, ES3 caching, FSM restarts, physics-query quirks) see <a href="modding-facts.html">Modding facts</a>.</p>
 <table>
 <thead><tr><th>Goal</th><th>Narrowest known target</th></tr></thead>
 <tbody>
@@ -135,7 +176,13 @@ th{color:#b9c5d3}.callout{border-left:4px solid var(--accent);background:var(--p
 
 <h2>Evidence & coverage</h2>
 <p>The source corpus combines runtime FSM dumps, an offline Unity serialized-asset scan, and managed assemblies. The offline scan identified 8,129 PlayMakerFSM components but only 519 were fully decoded by the current generic type-tree pass. Runtime detail remains the strongest source for exact player-system action parameters.</p>
-<p><a href="agent.md">Read the coding-agent guide</a> · <a href="facts.jsonl">Machine-readable fact set</a> · <a href="../">Open the existing Apocalypter world viewer</a></p>
+<p><a href="agent.md">Read the coding-agent guide</a> · <a href="facts.jsonl">Machine-readable fact set</a> · <a href="modding-facts.html">Modding facts</a> · <a href="../">World Facts</a></p>
 </main>
+<script>
+(()=>{const root=document.documentElement,b=document.getElementById('theme');
+const set=t=>{root.dataset.theme=t;b.textContent=t==='dark'?'Light mode':'Dark mode';b.setAttribute('aria-label','Switch to '+(t==='dark'?'light':'dark')+' mode')};
+let t='light';try{t=localStorage.getItem('apocalypter-doc-theme')||'light'}catch(e){}set(t);
+b.addEventListener('click',()=>{const n=root.dataset.theme==='dark'?'light':'dark';set(n);try{localStorage.setItem('apocalypter-doc-theme',n)}catch(e){}});})();
+</script>
 </body>
 </html>
